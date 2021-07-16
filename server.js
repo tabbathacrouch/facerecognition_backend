@@ -4,19 +4,19 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const salt = bcrypt.genSaltSync(10);
 const knex = require("knex");
-const register = require('./controllers/register.js');
-const signin = require('./controllers/signin.js');
+const register = require("./controllers/register.js");
+const signin = require("./controllers/signin.js");
 const profile = require("./controllers/profile.js");
 const image = require("./controllers/image.js");
 
-const db = knex({ 
-  client: 'pg', 
-  connection: { 
-    connectionString: process.env.DATABASE_URL,    
+const db = knex({
+  client: "pg",
+  connection: {
+    connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: false
-    }
-  }
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 const app = express();
@@ -24,7 +24,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/", (req, res) => { res.send('success') });
+app.get("/", (req, res) => {
+  res.send("success");
+});
 
 app.post("/signin", signin.handleSignIn(db, bcrypt));
 
@@ -34,6 +36,10 @@ app.get("/profile/:id", profile.handleProfile(db));
 
 app.put("/image", image.handleImage(db));
 
-app.post("/imageUrl", (req, res) => {image.handleApiCall(req, res)});
+app.post("/imageUrl", (req, res) => {
+  image.handleApiCall(req, res);
+});
 
-app.listen(process.env.PORT || 3000, () => { console.log(`app is running on port ${process.env.PORT}`) });
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`app is running on port ${process.env.PORT}`);
+});
