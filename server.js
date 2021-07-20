@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const cors = require("cors");
-const salt = bcrypt.genSaltSync(10);
 const knex = require("knex");
+const morgan = require("morgan");
+
 const register = require("./controllers/register.js");
 const signin = require("./controllers/signin.js");
 const profile = require("./controllers/profile.js");
@@ -11,18 +12,25 @@ const image = require("./controllers/image.js");
 
 const db = knex({
   client: "pg",
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
+  connection: process.env.POSTGRES_URI,
 });
 
 const app = express();
 
-app.use(bodyParser.json());
+// const whitelist = ["http://localhost:3001"];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+// };
+
+app.use(morgan("combined"));
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("success");
@@ -30,7 +38,9 @@ app.get("/", (req, res) => {
 
 app.post("/signin", signin.handleSignIn(db, bcrypt));
 
-app.post("/register", register.handleRegister(db, bcrypt));
+app.post("/register", (req, res) => {
+  register.handleRegister(req, res, db, bcrypt);
+});
 
 app.get("/profile/:id", profile.handleProfile(db));
 
@@ -40,6 +50,6 @@ app.post("/imageUrl", (req, res) => {
   image.handleApiCall(req, res);
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`app is running on port ${process.env.PORT}`);
+app.listen(3000, () => {
+  console.log(`app is running on port 3000`);
 });
