@@ -17,31 +17,26 @@ const db = knex({
 
 const app = express();
 
-const corsOptions = {
-  origin: "https://secret-hamlet-67600.herokuapp.com/",
-  optionsSuccessStatus: 200,
-};
-
-app.options("/register", cors());
+app.options("*", cors());
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
+app.get("/", cors(), (req, res) => {
   res.send("success");
 });
 
-app.post("/signin", signin.handleSignIn(db, bcrypt));
+app.post("/signin", cors(), signin.handleSignIn(db, bcrypt));
 
 app.post("/register", cors(), (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
 });
 
-app.get("/profile/:id", profile.handleProfile(db));
+app.get("/profile/:id", cors(), profile.handleProfile(db));
 
-app.put("/image", image.handleImage(db));
+app.put("/image", cors(), image.handleImage(db));
 
-app.post("/imageUrl", (req, res) => {
+app.post("/imageUrl", cors(), (req, res) => {
   image.handleApiCall(req, res);
 });
 
