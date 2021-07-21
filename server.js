@@ -22,7 +22,7 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOptions));
+app.options("/register", cors());
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 
 app.post("/signin", signin.handleSignIn(db, bcrypt));
 
-app.post("/register", (req, res) => {
+app.post("/register", cors(), (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
 });
 
