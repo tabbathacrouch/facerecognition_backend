@@ -17,12 +17,24 @@ const db = knex({
 
 const app = express();
 
-app.options("*", cors());
+const allowlist = [
+  "https://peaceful-plains-96573.herokuapp.com/",
+  "https://secret-hamlet-67600.herokuapp.com/",
+];
+const corsOptionsDelegate = function (req, callback) {
+  let corsOptions;
+  if (allowlist.indexOf(req.header("Origin")) !== -1) {
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
+};
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 
-app.get("/", cors(), (req, res) => {
+app.get("/", cors(corsOptionsDelegate), (req, res) => {
   res.send("success");
 });
 
