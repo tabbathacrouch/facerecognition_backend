@@ -23,10 +23,7 @@ app.use(bodyParser.json());
 
 app.use(
   cors({
-    origin: [
-      "https://peaceful-plains-96573.herokuapp.com/",
-      "https://secret-hamlet-67600.herokuapp.com/",
-    ],
+    origin: false,
     credentials: true,
   })
 );
