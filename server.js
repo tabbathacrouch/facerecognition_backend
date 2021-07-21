@@ -21,13 +21,15 @@ app.use(morgan("combined"));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://peaceful-plains-96573.herokuapp.com"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header(
+//     "Access-Control-Allow-Origin",
+//     "https://peaceful-plains-96573.herokuapp.com"
+//   );
+//   next();
+// });
+
+app.options("*", cors());
 
 app.get("/", (req, res) => {
   res.send("success");
