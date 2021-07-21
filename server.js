@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const knex = require("knex");
 const morgan = require("morgan");
+const request = require("request");
 
 const register = require("./controllers/register.js");
 const signin = require("./controllers/signin.js");
@@ -25,7 +26,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.send("success");
+  request(res.send("success"));
 });
 
 app.post("/signin", signin.handleSignIn(db, bcrypt));
