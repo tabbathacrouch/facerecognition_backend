@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
-    "https://secret-hamlet-67600.herokuapp.com/register"
+    "https://peaceful-plains-96573.herokuapp.com"
   );
   next();
 });
