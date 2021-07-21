@@ -21,7 +21,15 @@ app.use(morgan("combined"));
 
 app.use(bodyParser.json());
 
-app.use(cors({ origin: "*", methods: ["GET", "POST", "PUT"] }));
+app.use(
+  cors({
+    origin: [
+      "https://peaceful-plains-96573.herokuapp.com/",
+      "https://secret-hamlet-67600.herokuapp.com/",
+    ],
+    credentials: true,
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("success");
