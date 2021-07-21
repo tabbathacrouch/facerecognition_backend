@@ -18,14 +18,16 @@ const db = knex({
 const app = express();
 
 const corsOptions = {
-  origin: "https://secret-hamlet-67600.herokuapp.com/register",
+  origin: "https://secret-hamlet-67600.herokuapp.com/",
   optionsSuccessStatus: 200,
 };
+
+app.use(cors(corsOptions));
 
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 
-app.get("/", cors(corsOptions), (req, res) => {
+app.get("/", (req, res) => {
   res.send("success");
 });
 
