@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const knex = require("knex");
 const morgan = require("morgan");
-const request = require("request");
 
 const register = require("./controllers/register.js");
 const signin = require("./controllers/signin.js");
@@ -17,16 +16,13 @@ const db = knex({
 });
 
 const app = express();
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
+
 app.use(morgan("combined"));
 app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  request(res.send("success"));
+  res.send("success");
 });
 
 app.post("/signin", signin.handleSignIn(db, bcrypt));
