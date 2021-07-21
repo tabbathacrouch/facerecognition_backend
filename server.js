@@ -17,38 +17,27 @@ const db = knex({
 
 const app = express();
 
-const allowlist = [
-  "https://peaceful-plains-96573.herokuapp.com/",
-  "https://secret-hamlet-67600.herokuapp.com/",
-];
-const corsOptionsDelegate = function (req, callback) {
-  let corsOptions;
-  if (allowlist.indexOf(req.header("Origin")) !== -1) {
-    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false }; // disable CORS for this request
-  }
-  callback(null, corsOptions); // callback expects two parameters: error and options
-};
-
 app.use(morgan("combined"));
+
 app.use(bodyParser.json());
 
-app.get("/", cors(corsOptionsDelegate), (req, res) => {
+app.use(cors({ origin: "https://secret-hamlet-67600.herokuapp.com/" }));
+
+app.get("/", (req, res) => {
   res.send("success");
 });
 
-app.post("/signin", cors(), signin.handleSignIn(db, bcrypt));
+app.post("/signin", signin.handleSignIn(db, bcrypt));
 
-app.post("/register", cors(), (req, res) => {
+app.post("/register", (req, res) => {
   register.handleRegister(req, res, db, bcrypt);
 });
 
-app.get("/profile/:id", cors(), profile.handleProfile(db));
+app.get("/profile/:id", profile.handleProfile(db));
 
-app.put("/image", cors(), image.handleImage(db));
+app.put("/image", image.handleImage(db));
 
-app.post("/imageUrl", cors(), (req, res) => {
+app.post("/imageUrl", (req, res) => {
   image.handleApiCall(req, res);
 });
 
