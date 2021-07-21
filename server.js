@@ -32,6 +32,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cors());
+
 app.get("/", (req, res) => {
   res.send("success");
 });
