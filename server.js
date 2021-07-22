@@ -28,6 +28,12 @@ app.use((req, res, next) => {
 
 app.use(cors());
 
+// to avoid the failed favicon.ico 'get' request
+app.get("/favicon.ico", function (req, res) {
+  res.status(204);
+  res.end();
+});
+
 app.get("/", (req, res) => {
   res.send("success");
 });
